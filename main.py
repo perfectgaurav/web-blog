@@ -10,9 +10,9 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
 from flask_gravatar import Gravatar
 import os
-import datetime
+from datetime import datetime
 
-current_year=datetime.now().year()
+current_year=datetime.now().year
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
