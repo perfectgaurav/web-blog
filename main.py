@@ -112,7 +112,7 @@ def register():
         login_user(new_user)
         return redirect(url_for("get_all_posts"))
 
-    return render_template("register.html", form=form, current_user=current_user)
+    return render_template("register.html", form=form, year=current_year,current_user=current_user)
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -133,7 +133,7 @@ def login():
         else:
             login_user(user)
             return redirect(url_for('get_all_posts'))
-    return render_template("login.html", form=form, current_user=current_user)
+    return render_template("login.html", form=form, year=current_year,current_user=current_user)
 
 
 @app.route('/logout')
@@ -160,12 +160,12 @@ def show_post(post_id):
         db.session.add(new_comment)
         db.session.commit()
 
-    return render_template("post.html", post=requested_post, form=form, current_user=current_user)
+    return render_template("post.html", post=requested_post, year=current_year,form=form, current_user=current_user)
 
 
 @app.route("/about")
 def about():
-    return render_template("about.html", current_user=current_user)
+    return render_template("about.html",year=current_year, current_user=current_user)
 
 
 @app.route("/contact", methods=["GET", "POST"])
@@ -180,8 +180,8 @@ def contact():
         # print(username)
         send_mail(username,mail,number,message)
         
-        return render_template("index.html",current_user=current_user, msg_sent=True)
-    return render_template("contact.html",current_user=current_user, msg_sent=False)
+        return render_template("index.html",current_user=current_user,year=current_year, msg_sent=True)
+    return render_template("contact.html",current_user=current_user,year=current_year, msg_sent=False)
 
 
 @app.route("/new-post", methods=["GET", "POST"])
@@ -201,7 +201,7 @@ def add_new_post():
         db.session.commit()
         return redirect(url_for("get_all_posts"))
 
-    return render_template("make-post.html", form=form, current_user=current_user)
+    return render_template("make-post.html", form=form,year=current_year, current_user=current_user)
 
 
 
@@ -225,7 +225,7 @@ def edit_post(post_id):
         db.session.commit()
         return redirect(url_for("show_post", post_id=post.id))
 
-    return render_template("make-post.html", form=edit_form, is_edit=True, current_user=current_user)
+    return render_template("make-post.html", form=edit_form,year=current_year, is_edit=True, current_user=current_user)
 
 
 @app.route("/delete/<int:post_id>")
