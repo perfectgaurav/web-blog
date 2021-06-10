@@ -11,6 +11,7 @@ from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
 from flask_gravatar import Gravatar
 import os
 from datetime import datetime
+import smtplib
 
 current_year=datetime.now().year
 
