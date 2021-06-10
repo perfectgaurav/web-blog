@@ -16,6 +16,9 @@ current_year=datetime.now().year
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['OWN_EMAIL'] = os.environ.get('OWN_EMAIL')
+app.config['OWN_PASSWORD'] = os.environ.get('OWN_PASSWORD')
+
 ckeditor = CKEditor(app)
 Bootstrap(app)
 gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False, base_url=None)
@@ -165,9 +168,20 @@ def about():
     return render_template("about.html", current_user=current_user)
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html", current_user=current_user)
+    if request.method=="POST":
+
+        data = request.form
+        username=data["username"]
+        mail=data["mail"]
+        number=data["number"]
+        message=data["message"]
+        # print(username)
+        send_mail(username,mail,number,message)
+        
+        return render_template("index.html",current_user=current_user, msg_sent=True)
+    return render_template("contact.html",current_user=current_user, msg_sent=False)
 
 
 @app.route("/new-post", methods=["GET", "POST"])
@@ -221,6 +235,14 @@ def delete_post(post_id):
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for('get_all_posts'))
+
+def send_mail(username, mail, number, message):
+        email_message = f"Subject:New Message\n\nName: {username}\nEmail: {mail}\nPhone: {number}\nMessage:{message}"
+
+        with smtplib.SMTP("smtp.gmail.com") as connection:
+            connection.starttls()
+            connection.login(user=OWN_EMAIL,password=OWN_PASSWORD)
+            connection.sendmail(OWN_EMAIL, OWN_EMAIL, email_message)
 
 
 if __name__ == "__main__":
