@@ -13,12 +13,14 @@ import os
 from datetime import datetime
 import smtplib
 
+OWN_EMAIL="gblogs077@gmail.com"
+OWN_PASSWORD="Cristiano7@"
+
 current_year=datetime.now().year
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app.config['OWN_EMAIL'] = os.environ.get('OWN_EMAIL')
-app.config['OWN_PASSWORD'] = os.environ.get('OWN_PASSWORD')
+
 
 ckeditor = CKEditor(app)
 Bootstrap(app)
